@@ -1,26 +1,129 @@
-{% if result %}
-<div class="exam-container" style="max-width: 650px; margin: 40px auto; padding: 30px; border: 2px solid #333; background-color: #ffffff; font-family: 'Malgun Gothic', sans-serif; line-height: 1.6;">
-    
-    <div class="exam-header" style="border-bottom: 1px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
-        <span style="font-weight: bold; font-size: 18px;">[대학수학능력시험 모의평가 유형]</span>
-    </div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literature-ExamAI (문학 문제 출제 AI)</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background-color: #f5f6fa;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 24px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+        }
+        select, button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .exam-box {
+            margin-top: 30px;
+            padding: 25px;
+            border: 2px solid #2c3e50;
+            background-color: #fff;
+        }
+        .exam-header {
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #555;
+        }
+        .question {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .option {
+            margin-bottom: 10px;
+            font-size: 16px;
+            padding-left: 5px;
+        }
+        .result-panel {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px dashed #e74c3c;
+            background-color: #fdf2f2;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
 
-    <div class="question-title" style="font-size: 18px; font-weight: bold; margin-bottom: 20px; word-break: keep-all;">
-        Q. {{ result.question }}
-    </div>
+<div class="container">
+    <h1>📚 Literature-ExamAI 문학 출제 엔진</h1>
     
-    <div class="options-group" style="margin-left: 10px; margin-bottom: 30px; font-size: 16px;">
-        <div style="margin-bottom: 12px; word-break: keep-all;">① {{ result.option1 }}</div>
-        <div style="margin-bottom: 12px; word-break: keep-all;">② {{ result.option2 }}</div>
-        <div style="margin-bottom: 12px; word-break: keep-all;">③ {{ result.option3 }}</div>
-        <div style="margin-bottom: 12px; word-break: keep-all;">④ {{ result.option4 }}</div>
-        <div style="margin-bottom: 12px; word-break: keep-all;">⑤ {{ result.option5 }}</div>
-    </div>
-    
-    <div class="explanation-box" style="margin-top: 20px; padding: 15px; border: 1px dashed #777; background-color: #fcfcfc;">
-        <p style="color: #d9534f; font-weight: bold; font-size: 16px; margin: 0 0 8px 0;">🎯 정답 : {{ result.answer }}</p>
-        <p style="color: #555; font-size: 14px; margin: 0;">💡 <strong>해설 :</strong> {{ result.explanation }}</p>
-    </div>
+    <form action="/generate" method="POST">
+        <label for="title">출제할 문학 작품을 선택하세요</label>
+        <select name="title" id="title" required>
+            {% for title in works.keys() %}
+                <option value="{{ title }}" {% if title == selected_title %}selected{% endif %}>{{ title }}</option>
+            {% endfor %}
+        </select>
+        
+        <button type="submit">⚡ AI 수능형 문제 생성 / 다시 돌리기</button>
+    </form>
 
+    {% if result %}
+    <div class="exam-box">
+        <div class="exam-header">[대학수학능력시험 모의평가 문학 유형]</div>
+        
+        <div class="question">
+            Q. {{ result.question }}
+        </div>
+        
+        <div class="option">① {{ result.option1 }}</div>
+        <div class="option">② {{ result.option2 }}</div>
+        <div class="option">③ {{ result.option3 }}</div>
+        <div class="option">④ {{ result.option4 }}</div>
+        <div class="option">⑤ {{ result.option5 }}</div>
+        
+        <div class="result-panel">
+            <p style="color: #e74c3c; font-weight: bold; margin: 0 0 8px 0;">🎯 정답 : {{ result.answer }}</p>
+            <p style="color: #555; margin: 0; font-size: 14px;">💡 <strong>해설 :</strong> {{ result.explanation }}</p>
+        </div>
+    </div>
+    {% endif %}
 </div>
-{% endif %}
+
+</body>
+</html>
