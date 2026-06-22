@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>
+문학 출제 AI
+</title>
+
+</head>
+
+
+<body>
+
+
+<h1>
+문학 문제 출제 AI
+</h1>
+
+
+<form action="/generate" method="post">
+
+
+<select name="title">
+
+
+{% for work in works %}
+
+<option value="{{work}}">
+{{work}}
+</option>
+
+
+{% endfor %}
+
+
+</select>
+
+
+<button>
+문제 생성
+</button>
+
+
+</form>
+
+
+
+{% if result %}
+
+<h2>
+생성 결과
+</h2>
+
+
+<pre>
+{{result}}
+</pre>
+
+
+{% endif %}
+
+
+</body>
+
+</html>
